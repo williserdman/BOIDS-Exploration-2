@@ -548,9 +548,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5c8bf83a7766424c9de6d80911ab398, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  birdCount: 500
+  birdCount: 222
   birdPrefab: {fileID: 6460300605282019075, guid: 165c5e6f0bf164d12a3c7fb8cb44d2a3,
     type: 3}
+  birdTracker: []
 --- !u!4 &1695209064
 Transform:
   m_ObjectHideFlags: 0

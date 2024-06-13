@@ -7,14 +7,17 @@ public class FlockManager : MonoBehaviour
     [SerializeField] int birdCount = 50;
     [SerializeField] GameObject birdPrefab;
 
-    GameObject[] birdTracker;
+    public Bird[] birdTracker;
 
     // Start is called before the first frame update
     void Start()
     {
-        birdTracker = new GameObject[birdCount];
+        birdTracker = new Bird[birdCount];
 
-        foreach (GameObject b in birdTracker) Instantiate(birdPrefab, new Vector3(Random.Range(-100, 100), Random.Range(-100, 100), Random.Range(-100, 100)), Quaternion.identity); ;
+        for (int i = 0; i < birdTracker.Length; i++)
+        {
+            birdTracker[i] = Instantiate(birdPrefab, new Vector3(Random.Range(-200, 200), Random.Range(0, 300), Random.Range(-200, 200)), Quaternion.identity).GetComponent<Bird>();
+        }
     }
 
     // Update is called once per frame

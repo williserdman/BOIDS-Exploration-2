@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6017497243285337612}
   - component: {fileID: 3702428402493548820}
   - component: {fileID: 5241474490472361994}
-  - component: {fileID: 8171723771424089352}
   - component: {fileID: 6191730173386238814}
   m_Layer: 0
   m_Name: Bird
@@ -30,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.94, y: 3.94, z: 3.94}
+  m_LocalScale: {x: 3.64, y: 3.64, z: 3.64}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -85,27 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &8171723771424089352
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6460300605282019075}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6191730173386238814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,18 +96,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 835a3ef8b62b144b3b3e08718dfe02b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 75
-  viewRadius: 30
+  maxSpeed: 100
+  viewRadius: 50
   wanderAmmount: 1
   neighborsToNotice: 5
-  alignmentFactor: 3
-  seperationFactor: 3
+  alignmentFactor: 2
+  seperationFactor: 1
   cohesionFactor: 3
-  wanderFactor: 3
-  directionFactor: 2
+  wanderFactor: 1
+  directionFactor: 1
   verticalLimiter: 1
   boundary: 300
   forceBoundaryFactor: 5
   maxSpeedBurst: 10
-  angleFactor: 2
+  angleFactor: 0
   velocity: {x: 0, y: 0, z: 0}

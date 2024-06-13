@@ -22,20 +22,26 @@ public class Bird : MonoBehaviour
     public Vector3 velocity = Vector3.zero;
 
     float originalDirectionFactor;
+    FlockManager fm;
+    Vector3 acceleration = Vector3.zero;
 
     // Start is called before the first frame update
     void Start()
     {
         originalDirectionFactor = directionFactor;
         Wander();
+        fm = FindFirstObjectByType<FlockManager>();
+
+        Wander();
+        velocity *= maxSpeed * 5;
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         //velocity = Vector3.ClampMagnitude(velocity, velocity.magnitude / 1.5f);
 
-        Bird[] neighbors = GetNeighbors();
+        Bird[] neighbors = GetNeighbors(1);
 
         //print(neighbors);
         //print(neighbors.Length);
@@ -50,7 +56,7 @@ public class Bird : MonoBehaviour
 
         if (IsBelowOrigin())
         {
-            velocity += Vector3.up * forceBoundaryFactor;
+            acceleration += Vector3.up * forceBoundaryFactor;
         }
 
         if (neighbors != null & neighbors.Length > 0)
@@ -58,10 +64,9 @@ public class Bird : MonoBehaviour
             Seperation(neighbors);
             Alignment(neighbors);
             Cohesion(neighbors);
-        } else
-        {
-            Wander();
         }
+
+        Wander();
 
         if (AngleToOrigin() < 45) PushCentralNoYShift();
 
@@ -83,15 +88,10 @@ public class Bird : MonoBehaviour
         //velocity *= 5f;
         //print(velocity);
 
-        if (Random.Range(1, 501) == 1)
-        {
-            velocity = velocity.normalized * maxSpeedBurst;
-        } else
-        {
-            velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
-        }
+        velocity += acceleration;
+        velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
+        acceleration = Vector3.zero;
 
-        //print(clampedVelocity);
         transform.Translate(velocity * Time.deltaTime);
     }
 
@@ -99,7 +99,7 @@ public class Bird : MonoBehaviour
     {
         Vector3 randomDirection = new Vector3(Random.Range(-wanderAmmount, wanderAmmount), verticalLimiter * Random.Range(-wanderAmmount, wanderAmmount), Random.Range(-wanderAmmount, wanderAmmount));
 
-        velocity += randomDirection.normalized * wanderFactor;
+        acceleration += randomDirection.normalized * wanderFactor;
     }
 
     Bird[] GetNeighbors()
@@ -121,6 +121,24 @@ public class Bird : MonoBehaviour
         return gameObjs.ToArray();
     }
 
+    Bird[] GetNeighbors(int _)
+    {
+        List<Bird> closeBirds = new List<Bird>();
+
+        foreach(Bird b in fm.birdTracker)
+        {
+            if (b == this)
+            {
+                //continue;
+            }
+            if (Vector3.Distance(transform.position, b.gameObject.transform.position) < viewRadius)
+            {
+                closeBirds.Add(b);
+            }
+        }
+        return closeBirds.ToArray();
+    }
+
     void Alignment(Bird[] neighbors) {
         Vector3 vel = Vector3.zero;
 
@@ -129,7 +147,7 @@ public class Bird : MonoBehaviour
             vel += n.velocity.normalized;
         }
 
-        velocity += vel.normalized * alignmentFactor;
+        acceleration += vel.normalized * alignmentFactor;
     }
 
     void Seperation(Bird[] neighbors) {
@@ -141,7 +159,7 @@ public class Bird : MonoBehaviour
             vel -= directionToOther.normalized;
         }
 
-        velocity += vel.normalized * seperationFactor;
+        acceleration += vel.normalized * seperationFactor;
     }
 
     void Cohesion(Bird[] neighbors) {
@@ -157,14 +175,14 @@ public class Bird : MonoBehaviour
 
         Vector3 directionToCenter = average - transform.position;
 
-        velocity += directionToCenter.normalized * cohesionFactor;
+        acceleration += directionToCenter.normalized * cohesionFactor;
     }
 
     void GoTowardOrigin()
     {
         Vector3 directionToOrigin = Vector3.zero - transform.position;
 
-        velocity += directionToOrigin.normalized * directionFactor;
+        acceleration += directionToOrigin.normalized * directionFactor;
     }
 
     bool IsWithinBoundary()
@@ -200,6 +218,6 @@ public class Bird : MonoBehaviour
         Vector3 directionToOrigin = Vector3.zero - transform.position;
         directionToOrigin.y *= 0;
 
-        velocity += directionToOrigin * angleFactor;
+        acceleration += directionToOrigin * angleFactor;
     }
 }
